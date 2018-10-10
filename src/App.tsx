@@ -8,10 +8,12 @@ class App extends React.Component<WithStyles<typeof styles>>{
     render(){
         return(
             <div>
-                <p>aaaaa</p>
-                <p>aaaaa</p>
-                <p>aaaaa</p>
-                <p>aaaaa</p>
+                <p>施工中</p>
+                <p>Under construction
+                </p>
+                <p>施工中</p>
+                <p>Under construction
+                </p>
             </div>
         );
     }
