@@ -58,7 +58,7 @@ module.exports = {
             ['build'], {
                 root:path.resolve(__dirname, '../'),
                 exclude: ['.datignore', 'dat.json'],
-                dry: true,
+                dry: false,
             }),
         new CheckerPlugin(),
         // new ExtractTextPlugin('styles.css'),
