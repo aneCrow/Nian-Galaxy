@@ -44,16 +44,7 @@ export default class MaterialUI extends React.Component<{}, State> {
         return (
             <MuiThemeProvider theme={theme}>
                 <CssBaseline/>
-                {/*<Component {...props} />*/}
-                <div style={{
-                    margin: 0,
-                    textAlign: 'center',
-                    justifyContent: 'center',
-                    padding: 0,
-                    height: '100%'
-                }}>
-                    {this.props.children}
-                </div>
+                {this.props.children}
             </MuiThemeProvider>
         );
     }

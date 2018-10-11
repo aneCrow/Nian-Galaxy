@@ -11,13 +11,14 @@ function Intro(props: Prop) {
             <Typography className={classes.title} variant="h1">
                 Nian-Galaxy
             </Typography>
-            <Typography variant="caption">
+            <Typography className={classes.caption} variant="caption">
                 Your peer-to-peer light social note manager app.
             </Typography>
             <Grid className={classes.buttons}
                   container
                   direction="column"
                   justify="center"
+                  alignItems="center"
                   spacing={16}
             >
                 <Grid item>
@@ -31,9 +32,11 @@ function Intro(props: Prop) {
                         </Button>
                     </Link>
                 </Grid>
-                <Grid item style={{position: 'absolute', top: 0, left: 0, width: '100%'}}>
+                <Grid item className={classes.buttonDevPosition}>
                     <Link to="/dev">
-                        <Button className={classes.buttonDev}>dev</Button>
+                        <Button className={classes.buttonDev}>
+                            dev
+                        </Button>
                     </Link>
                 </Grid>
             </Grid>

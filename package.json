@@ -6,7 +6,7 @@
     "test": "webpack-dev-server --hot --config config/webpack.dev.js",
     "start": "webpack-dev-server --progress --hot --config config/webpack.dev.js",
     "build": "webpack --progress --config config/webpack.pro.js",
-    "build-dev": "webpack --progress --hot --config config/webpack.pro.js"
+    "build-dev": "webpack --progress --watch --hot --config config/webpack.pro.js"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.1",

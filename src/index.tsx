@@ -1,23 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import { BrowserRouter,Switch, Route } from 'react-router-dom'
+import {Provider} from 'react-redux'
+import {BrowserRouter, Switch, Route, Link} from 'react-router-dom'
 import MaterialUI from './MaterialUI';
-import store from './redux/store';
-import App from  './App';
-import Intro from './Intro';
+import storeRedux from './redux/store';
+import App from './view/AppIndex';
+import Dev from './view/DevIndex';
+import Intro from './view/Intro';
+import {Button} from "@material-ui/core";
 
 const Index = () => (
-    <Provider store={store}/*redux组件*/>
+    <Provider store={storeRedux}/*redux组件*/>
         <BrowserRouter/*路由组件*/>
             <MaterialUI/*UI组件*/>
-                <Switch>
-                    <Route exact path="/" component={Intro} />
-                    <Route path="/home" component={App} />
-                    <Route path="/dev" component={App} />
-                </Switch>
+                <Route exact path="/" component={Intro}/>
+                <Route path="/home" component={App}/>
+                <Route path="/dev/:topicId?" component={Dev}/>
             </MaterialUI>
         </BrowserRouter>
     </Provider>
 );
-ReactDOM.render(<Index />, document.getElementById('root'));
+ReactDOM.render(<Index/>, document.getElementById('root'));
