@@ -1,7 +1,6 @@
 const path = require('path');
 const SRC_PATH = path.resolve(__dirname, '../src');
 const DIST_PATH = path.resolve(__dirname, '../build');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const {CheckerPlugin} = require('awesome-typescript-loader');
 
 module.exports = {
@@ -54,12 +53,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(
-            ['build'], {
-                root:path.resolve(__dirname, '../'),
-                exclude: ['.datignore', 'dat.json'],
-                dry: false,
-            }),
         new CheckerPlugin(),
         // new ExtractTextPlugin('styles.css'),
     ],
