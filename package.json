@@ -1,7 +1,6 @@
 {
   "name": "beaker-react-dev",
   "version": "0.0.1",
-  "homepage":"./",
   "description": "A p2p notebook app power by : react + react-router + redux + webpack + typescript",
   "scripts": {
     "startDev": "webpack-dev-server --hot --config config/webpack.dev.js",
