@@ -11,15 +11,14 @@ module.exports = merge(common, {
     output: {
         filename: 'js/bundle.js',
         path: DIST_PATH,
-        publicPath:"/"
+        publicPath: "/Nian-Galaxy/public/demo/"
     },
-    plugins:[
-    new CleanWebpackPlugin(
-        ['demo'], {
-            root:path.resolve(__dirname, '../public/'),
-            exclude: ['.datignore', 'dat.json'],
-            dry: false,
-        }),
+    plugins: [
+        new CleanWebpackPlugin(
+            ['demo'], {
+                root: path.resolve(__dirname, 'public/'),
+                dry: false,
+            }),
         new HtmlWebpackPlugin({
             title: 'Nian-Galaxy',
             template: 'public/index.html',
