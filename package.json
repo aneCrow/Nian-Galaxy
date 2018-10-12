@@ -1,12 +1,13 @@
 {
   "name": "beaker-react-dev",
   "version": "0.0.1",
+  "homepage":"./",
   "description": "A p2p notebook app power by : react + react-router + redux + webpack + typescript",
   "scripts": {
-    "test": "webpack-dev-server --hot --config config/webpack.dev.js",
-    "start": "webpack-dev-server --progress --hot --config config/webpack.dev.js",
+    "startDev": "webpack-dev-server --hot --config config/webpack.dev.js",
     "build": "webpack --progress --config config/webpack.pro.js",
-    "build-dev": "webpack --progress --watch --hot --config config/webpack.pro.js"
+    "buildDev": "webpack --progress --watch --hot --config config/webpack.pro.js",
+    "buildToGithub": "webpack --progress --config config/webpack.github.js"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.1",

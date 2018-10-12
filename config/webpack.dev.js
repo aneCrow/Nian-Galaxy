@@ -38,8 +38,20 @@ module.exports = merge(common, {
     devServer: {
         hot: true,
         compress: true,
+        noInfo: true,
         historyApiFallback: true,
-        host: 'localhost',
-        port: 3000
+        host: '0.0.0.0',
+        port: 3000,
+        // proxy: {
+        //     '/': {
+        //         target: '/',
+        //         bypass: function (req, res, proxyOptions) {
+        //             if (req.headers.accept.indexOf('html') !== -1) {
+        //                 console.log('Skipping proxy for browser request.');
+        //                 return 'index.html';
+        //             }
+        //         }
+        //     }
+        // }
     }
 });
