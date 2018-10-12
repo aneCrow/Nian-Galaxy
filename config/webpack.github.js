@@ -21,7 +21,7 @@ module.exports = merge(common, {
             }),
         new HtmlWebpackPlugin({
             title: 'Nian-Galaxy',
-            template: 'public/index.html',
+            template: 'public/index-github.html',
             inject: 'body',
             // minify: {
             //     html5: true
