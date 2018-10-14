@@ -18,7 +18,6 @@ const Index = () => (
                 <Switch>
                     <Route exact path="/" component={Intro}/>
                     <Route path="/home" component={App}/>
-                    {/*<Route path="/dev/:id" component={Dev}/>*/}
                     <Route path="/dev" component={Dev}/>
                     <Redirect to="/"/>
                 </Switch>

@@ -39,12 +39,13 @@ function Intro(props: Prop) {
             >
                 <Grid item>
                     <Link to="/home">
-                        <Button
-                            className={classes.buttonEnter}
-                            variant="contained"
-                            color="secondary"
+                        <Button className={classes.buttonEnter}
+                                variant='outlined'
+                                color='secondary'
                         >
-                            Enter
+                            <Typography variant='title' color='primary'>
+                                Enter
+                            </Typography>
                         </Button>
                     </Link>
                 </Grid>
