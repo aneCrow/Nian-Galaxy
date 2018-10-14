@@ -1,5 +1,9 @@
 import {createStyles, Theme} from "@material-ui/core";
 
+export const stylesDefault = (theme: Theme) =>
+    createStyles({
+        root: {}
+    });
 export const stylesIntro = (theme: Theme) =>
     createStyles({
         root: {
@@ -23,7 +27,7 @@ export const stylesIntro = (theme: Theme) =>
         },
         key1:{
             left: theme.spacing.unit*12,
-            letterSpacing: theme.spacing.unit*0.7,
+            letterSpacing: theme.spacing.unit*0.25,
         },
         key2:{
             right: theme.spacing.unit*12,
@@ -49,7 +53,8 @@ export const stylesIntro = (theme: Theme) =>
             marginTop: theme.spacing.unit * 4,
         },
         buttonEnter: {
-            width: theme.spacing.unit * 20,
+            width: theme.spacing.unit *50,
+            height:theme.spacing.unit *8
         },
         buttonDev: {
             width: theme.spacing.unit * 20,
@@ -74,4 +79,23 @@ export const stylesDev = (theme: Theme) =>
             flexDirection: 'column',
             alignItems: 'flex-start',
         },
+        errorCard:{
+            margin: 'auto',
+        }
+    });
+export const stylesDevNavBar = (theme: Theme) =>
+    createStyles({
+        root: {
+            // margin: 'auto',
+            height: 'calc(100%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+        },
+        menu:{
+            paddingRight:theme.spacing.unit * 2.5,
+            marginRight:theme.spacing.unit * 2,
+            minWidth:150,
+            borderRight:'thin solid',
+        }
     });

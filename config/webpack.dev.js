@@ -19,10 +19,6 @@ module.exports = merge(common, {
         poll: 1000,
         ignored: ['node_modules', 'public']
     },
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM",
-    },
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Nian-Galaxy',
