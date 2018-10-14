@@ -8,8 +8,6 @@ import App from './view/AppIndex';
 import Dev from './view/DevIndex';
 import Intro from './view/Intro';
 
-// @ts-ignore
-const docUrl:string = window.docUrl?window.docUrl:'';
 const Index = () => (
     <Provider store={storeRedux} /*容器：提供所有子组件redux的store*/>
         {/*TODO 更换BrowserRouter basename={docUrl}*/}

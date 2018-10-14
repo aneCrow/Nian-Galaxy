@@ -7,13 +7,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(common, {
     mode: 'production',
-    plugins:[
-    new CleanWebpackPlugin(
-        ['build'], {
-            root:path.resolve(__dirname, '../'),
-            exclude: ['.datignore', 'dat.json'],
-            dry: false,
-        }),
+    plugins: [
+        new CleanWebpackPlugin(
+            ['build'], {
+                root: path.resolve(__dirname, '../'),
+                exclude: ['.datignore', 'dat.json'],
+                dry: false,
+            }),
         new HtmlWebpackPlugin({
             title: 'Nian-Galaxy',
             template: 'public/index.html',
