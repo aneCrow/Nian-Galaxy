@@ -1,38 +1,25 @@
 import React from 'react';
 import {
-    AppBar,
+    AppBar, Toolbar,
     IconButton,
-    Popover,
-    MenuList,
-    MenuItem,
-    Tab,
-    Tabs,
-    Fade,
-    Divider,
-    Toolbar,
-    withStyles,
-    WithStyles
+    MenuList, MenuItem,
+    Tab, Tabs,
+    Fade, Popover,
+    withStyles, WithStyles
 } from "@material-ui/core";
-import {stylesDevNavBar as styles} from "../styles";
 import {Menu as MenuIcon} from "@material-ui/icons";
+
+import {stylesDevNavBar as styles} from "../styles";
 import {DevContains} from '../DevIndex';
 
 type tabIndex = number | false;
-export type navIndex = {
-    barIndex: number,
-    tabIndex: tabIndex
-};
-export type menuItem = {
-    name: string,
-    component: any
-}
+export type navIndex = { barIndex: number, tabIndex: tabIndex };
 
 interface Props extends WithStyles<typeof styles> {
     selectedIndex: navIndex,
-
-    setBarIndex(index: navIndex): void
+    setBarIndex(index: navIndex): void,
+    history:any,
 }
-
 type State = {
     menuAnchorEl: any | null,
 }
@@ -44,12 +31,14 @@ class DevNavBar extends React.Component<Props, State> {
             menuAnchorEl: null,
         };
     }
-
+    //TODO 导航分页、导航按钮、url跳转操作关系冲突，预备移入redux控制
     handleTabChange = (e: any, i: number) => {
         let index: navIndex = this.props.selectedIndex;
         if (index.tabIndex !== i) index.tabIndex = i;
         else index.tabIndex = false;
         this.props.setBarIndex(index);
+        let path = window.location.hash.replace('#','');
+        this.props.history.push(`${path}/${DevContains[index.barIndex].items[i].name}`);
     };
     handleMenu = (e: any) => {
         this.setState({menuAnchorEl: e.currentTarget});
@@ -58,7 +47,8 @@ class DevNavBar extends React.Component<Props, State> {
         let index: navIndex;
         index = {barIndex: i, tabIndex: false};
         this.props.setBarIndex(index);
-        this.setState({menuAnchorEl: null})
+        this.setState({menuAnchorEl: null});
+        this.props.history.push(`/dev/${DevContains[i].title}`);
     };
     handleMenuClose = () => {
         this.setState({menuAnchorEl: null});

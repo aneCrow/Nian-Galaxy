@@ -35,15 +35,40 @@ class Dev extends React.Component<WithStyles<typeof styles>, State> {
     setBarIndex = (i: navIndex) => {
         this.setState({selectedIndex: i});
     };
-
+    fixPath = (pathname:string,index:navIndex)=>{
+        let selectPath = `/dev/${DevContains[index.barIndex].title}`;
+        if(index.tabIndex!==false)selectPath= selectPath+`/${DevContains[index.barIndex].items[index.tabIndex].name}`;
+        if(pathname===selectPath)return;
+        let paths = pathname.split('/');
+        let going = true;
+        DevContains.map((v,i)=>{
+            if(v.title===paths[2]&&going){
+                index.barIndex = i;
+                going = false;
+            }
+        });
+        going = true;
+        if(paths.length>3){
+            DevContains[index.barIndex].items.map((v,i)=>{
+                if(v.name===paths[3]&&going){
+                    index.tabIndex = i;
+                    going = false;
+                }
+            })
+        }
+        this.setState({selectedIndex:index})
+    };
     render() {
-        const {classes, match}: any = this.props;
+        const {classes, match,history}: any = this.props;
         const {selectedIndex}: any = this.state;
+        // this.fixPath(history.location.pathname,selectedIndex);//TODO bug递归循环
         return (
             <div className={classes.root}>
                 <DevNavBar
                     selectedIndex={selectedIndex}
                     setBarIndex={this.setBarIndex}
+                    history={history}
+                    match={match}
                     classes={undefined}
                 />
                 <Switch>
@@ -78,7 +103,7 @@ const RouteMap = ({match, classes}: any) => {
                                         <RouteItem exact
                                                    path={`${match.path}/${valuet.name}`}
                                                    key={indext}
-                                                   classes={classes}
+                                                   classes={checkComponent?null:classes}//给默认组件传入classes而不是目标组件
                                                    indexPath={[indexb, indext]}
                                                    component={(checkComponent ? valuet.component : errorPage)}
                                         />
@@ -104,7 +129,7 @@ const errorPage = ({...props}) => {
     const {classes, match, indexPath}: any = props;
     const title = DevContains[indexPath[0]].title;
     const name = DevContains[indexPath[0]].items[indexPath[1]].name;
-    return (
+    return withStyles(styles)(()=>(
         <Card className={classes.errorCard}>
             <CardContent>
                 <Typography variant="h4" color='secondary'>{title} {name}</Typography>
@@ -114,7 +139,7 @@ const errorPage = ({...props}) => {
                 <Typography variant="body1">'undefinded'</Typography>
             </CardContent>
         </Card>
-    )
+    ))
 };
 const defaultPage = ({...props}) => {
     const {match}: any = props;
@@ -127,7 +152,7 @@ const defaultPage = ({...props}) => {
                 <Typography variant="body1">get testing component</Typography>
                 <CardActions>
                     <Link to={'/'}>
-                        <Button variant='fab' color='secondary'>
+                        <Button variant='contained' color='secondary'>
                             Home
                         </Button>
                     </Link>
@@ -137,6 +162,15 @@ const defaultPage = ({...props}) => {
     )
 };
 
+type DevContains = [
+    {
+        title:string,
+        items:[{
+            name:string,
+            component:any
+        }]
+    }
+    ]
 export const DevContains = [
     {
         title: 'components',
