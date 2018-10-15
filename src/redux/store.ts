@@ -1,14 +1,9 @@
-import {createStore,applyMiddleware} from 'redux';
-import reducers from './reducers';
+import {createStore, applyMiddleware} from 'redux';
+import reducer from './reducers';
+import {initialState} from './initialState';
 import thunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
 
-const initState = ['Use Redux'];
-const store = createStore(
-    reducers,{},
-    applyMiddleware(
-        thunk,
-        promiseMiddleware
-    )
-);
-export default store;
+// @ts-ignore
+let storeRedux = createStore(reducer, initialState, applyMiddleware(thunk, promiseMiddleware));
+export default storeRedux;

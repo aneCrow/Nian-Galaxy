@@ -37,8 +37,6 @@ class DevNavBar extends React.Component<Props, State> {
         if (index.tabIndex !== i) index.tabIndex = i;
         else index.tabIndex = false;
         this.props.setBarIndex(index);
-        let path = window.location.hash.replace('#','');
-        this.props.history.push(`${path}/${DevContains[index.barIndex].items[i].name}`);
     };
     handleMenu = (e: any) => {
         this.setState({menuAnchorEl: e.currentTarget});
@@ -48,7 +46,6 @@ class DevNavBar extends React.Component<Props, State> {
         index = {barIndex: i, tabIndex: false};
         this.props.setBarIndex(index);
         this.setState({menuAnchorEl: null});
-        this.props.history.push(`/dev/${DevContains[i].title}`);
     };
     handleMenuClose = () => {
         this.setState({menuAnchorEl: null});

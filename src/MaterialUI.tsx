@@ -1,51 +1,37 @@
 import React from 'react';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import * as MuiColors from '@material-ui/core/colors';
-import {CssBaseline, colors, PaletteType, Color} from '@material-ui/core';
+import {CssBaseline} from '@material-ui/core';
+import {appTheme,StoryState} from './redux/initialState';
 import 'typeface-roboto';
+import {setTheme} from "./redux/actions";
+import {connect} from "react-redux";
 
-interface State {
-    theme: {
-        palette?: {
-            type?: PaletteType,
-            primary?: Color,
-            secondary?: Color,
-            error?: Color,
-            background?: {
-                paper?: string,
-                default?: string,
-            },
-        },
-        shape?: {
-            borderRadius?: number,
-        }
-    }
+type Props = {
+    appTheme: undefined|appTheme;
 }
 
 //Material UI装饰根组件
-export default class MaterialUI extends React.Component<{}, State> {
+class MaterialUI extends React.Component<Props> {
     constructor(props: any) {
         super(props);
-        this.state = {
-            //TODO 使用redux管理theme
-            theme: {
-                palette: {
-                    primary: colors.brown,
-                    secondary: colors.amber,
-                    error: colors.red,
-                    type: 'dark',
-                }
-            }
-        };
     }
-
     render() {
-        const theme = createMuiTheme(this.state.theme);
         return (
-            <MuiThemeProvider theme={theme}>
+            <MuiThemeProvider theme={createMuiTheme(this.props.appTheme)}>
                 <CssBaseline/>
                 {this.props.children}
             </MuiThemeProvider>
         );
     }
 }
+
+const mapStateToProps = (state:StoryState) =>({
+    appTheme:state.theme
+});
+const mapDispatchToProps = (dispatch:any) =>({
+    // setTheme: (theme:appTheme) => dispatch(setTheme(theme))
+});
+export default connect(
+    mapStateToProps
+    // mapDispatchToProps
+)(MaterialUI)

@@ -1,13 +1,12 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
-const pro = require('./webpack.pro');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DIST_PATH = path.resolve(__dirname, '../docs/demo');
 // const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = merge(pro ,{
+module.exports = merge(common ,{
     mode: 'production',
     output: {
         filename: 'js/bundle.js',
@@ -20,5 +19,15 @@ module.exports = merge(pro ,{
                 root: path.resolve(__dirname, 'docs/'),
                 dry: false,
             }),
+        new HtmlWebpackPlugin({
+            title: 'Nian-Galaxy',
+            template: 'public/index.html',
+            inject: 'body',
+            // minify: {
+            //     html5: true
+            // },
+            hash: true,
+            favicon: 'public/favicon.ico'
+        }),
     ]
 });

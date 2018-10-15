@@ -19,49 +19,19 @@ class Dev extends React.Component<WithStyles<typeof styles>, State> {
             selectedIndex: {barIndex: 0, tabIndex: false},
             routeIndex: {}
         };
-        this.handleTabChange = this.handleTabChange.bind(this);
     }
 
-    handleTabChange = (e: any, barValue: number | boolean) => {
-        if (barValue === this.state.barValue) barValue = false;
-        this.setState({barValue});
-
-        let a: string;
-        if (barValue === false) a = '';
-        else a = '/' + barValue.toString();
-        // @ts-ignore
-        this.props.history.push('/dev' + (a));
-    };
     setBarIndex = (i: navIndex) => {
         this.setState({selectedIndex: i});
+        let path = `/dev/${DevContains[i.barIndex].title}`;
+        if (i.tabIndex !== false) path = `${path}/${DevContains[i.barIndex].items[i.tabIndex].name}`;
+        // @ts-ignore
+        this.props.history.push(path);
     };
-    fixPath = (pathname:string,index:navIndex)=>{
-        let selectPath = `/dev/${DevContains[index.barIndex].title}`;
-        if(index.tabIndex!==false)selectPath= selectPath+`/${DevContains[index.barIndex].items[index.tabIndex].name}`;
-        if(pathname===selectPath)return;
-        let paths = pathname.split('/');
-        let going = true;
-        DevContains.map((v,i)=>{
-            if(v.title===paths[2]&&going){
-                index.barIndex = i;
-                going = false;
-            }
-        });
-        going = true;
-        if(paths.length>3){
-            DevContains[index.barIndex].items.map((v,i)=>{
-                if(v.name===paths[3]&&going){
-                    index.tabIndex = i;
-                    going = false;
-                }
-            })
-        }
-        this.setState({selectedIndex:index})
-    };
+
     render() {
-        const {classes, match,history}: any = this.props;
+        const {classes, match, history}: any = this.props;
         const {selectedIndex}: any = this.state;
-        // this.fixPath(history.location.pathname,selectedIndex);//TODO bug递归循环
         return (
             <div className={classes.root}>
                 <DevNavBar
@@ -87,33 +57,35 @@ const RouteMap = ({match, classes}: any) => {
     return (
         <React.Fragment>
             {DevContains.map((valueb: any, indexb: number) => {
-                return (
-                    <Route
-                        path={`${match.path}/${valueb.title}`}
-                        key={indexb}
-                        render={({match}) => (
-                            <Switch>
-                                <Route exact path={`${match.path}`} render={({match}) => {
-                                    return defaultPage({match});
-                                }}/>
-                                {valueb.items.map((valuet: any, indext: number) => {
-                                    let checkComponent: boolean = false;
-                                    if (valuet.component) checkComponent = true;//TODO 细化目标组件检查
-                                    return (
-                                        <RouteItem exact
-                                                   path={`${match.path}/${valuet.name}`}
-                                                   key={indext}
-                                                   classes={checkComponent?null:classes}//给默认组件传入classes而不是目标组件
-                                                   indexPath={[indexb, indext]}
-                                                   component={(checkComponent ? valuet.component : errorPage)}
-                                        />
+                    return (
+                        <Route
+                            path={`${match.path}/${valueb.title}`}
+                            key={indexb}
+                            render={({match}) => (
+                                <Switch>
+                                    <Route exact path={`${match.path}`} render={({match}) => {
+                                        return defaultPage({match});
+                                    }}/>
+                                    {valueb.items.map((valuet: any, indext: number) => {
+                                            let checkComponent: boolean = false;
+                                            if (valuet.component) checkComponent = true;//TODO 细化目标组件检查
+                                            return (
+                                                <RouteItem exact
+                                                           path={`${match.path}/${valuet.name}`}
+                                                           key={indext}
+                                                           classes={checkComponent ? null : classes}//给默认组件传入classes而不是目标组件
+                                                           indexPath={[indexb, indext]}
+                                                           component={(checkComponent ? valuet.component : errorPage)}
+                                                />
+                                            )
+                                        }
                                     )}
-                                )}
-                                <Redirect to={`${match.path}`}/>
-                            </Switch>
-                        )}
-                    />
-                )}
+                                    <Redirect to={`${match.path}`}/>
+                                </Switch>
+                            )}
+                        />
+                    )
+                }
             )}
         </React.Fragment>
     );
@@ -125,11 +97,11 @@ const RouteItem = ({component: Component, indexPath: indexPath, classes: classes
         <Component indexPath={indexPath} classes={classes} {...props}/>
     )}/>
 );
-const errorPage = ({...props}) => {
+const _errorPage = ({...props}) => {
     const {classes, match, indexPath}: any = props;
     const title = DevContains[indexPath[0]].title;
     const name = DevContains[indexPath[0]].items[indexPath[1]].name;
-    return withStyles(styles)(()=>(
+    return (
         <Card className={classes.errorCard}>
             <CardContent>
                 <Typography variant="h4" color='secondary'>{title} {name}</Typography>
@@ -139,8 +111,9 @@ const errorPage = ({...props}) => {
                 <Typography variant="body1">'undefinded'</Typography>
             </CardContent>
         </Card>
-    ))
+    );
 };
+const errorPage = withStyles(styles)(_errorPage);
 const defaultPage = ({...props}) => {
     const {match}: any = props;
     return (
@@ -164,10 +137,10 @@ const defaultPage = ({...props}) => {
 
 type DevContains = [
     {
-        title:string,
-        items:[{
-            name:string,
-            component:any
+        title: string,
+        items: [{
+            name: string,
+            component: any
         }]
     }
     ]
