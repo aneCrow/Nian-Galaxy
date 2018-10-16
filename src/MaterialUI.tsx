@@ -1,10 +1,11 @@
 import React from 'react';
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {CssBaseline} from '@material-ui/core';
 import {appTheme,StoryState} from './redux/initialState';
 import 'typeface-roboto';
 import {setTheme} from "./redux/actions";
-import {connect} from "react-redux";
 
 type Props = {
     appTheme: undefined|appTheme;
@@ -31,7 +32,5 @@ const mapStateToProps = (state:StoryState) =>({
 const mapDispatchToProps = (dispatch:any) =>({
     // setTheme: (theme:appTheme) => dispatch(setTheme(theme))
 });
-export default connect(
-    mapStateToProps
-    // mapDispatchToProps
-)(MaterialUI)
+// @ts-ignore
+export default  withRouter(connect(mapStateToProps)(MaterialUI))

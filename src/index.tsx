@@ -8,8 +8,8 @@ import App from './view/AppIndex';
 import Dev from './view/DevIndex';
 import Intro from './view/Intro';
 
-const Index = () => (
-    <Provider store={storeRedux} /*容器：提供所有子组件redux的store*/>
+const Index = ({store}:any) => (
+    <Provider store={store} /*容器：提供所有子组件redux的store*/>
         {/*TODO 更换BrowserRouter basename={docUrl}*/}
         <HashRouter/*容器: 路由*/>
             <MaterialUI/*容器：提供所有ui组件theme*/>
@@ -23,4 +23,4 @@ const Index = () => (
         </HashRouter>
     </Provider>
 );
-ReactDOM.render(<Index/>, document.getElementById('root'));
+ReactDOM.render(<Index store={storeRedux}/>, document.getElementById('root'));
