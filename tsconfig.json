@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
+//    "allowJs": true,
+//    "checkJs":true,
     "outDir": "build",
     "baseUrl": "src",
     "sourceMap": true,
-    "noImplicitAny": true,
-    "removeComments": true,
-    "allowSyntheticDefaultImports":true,
     "module": "es6",
     "target": "es5",
     "jsx": "react",
     "lib": ["es6","dom"],
-    "moduleResolution": "node",
-    "allowJs": true,
-    "strict": true,
-    "strictNullChecks":true
+    "moduleResolution": "Classic",
+    "strict": false,
+    "allowSyntheticDefaultImports":true,
+    "allowUnusedLabels":true
   },
   "include": [
     "./src/**/*"

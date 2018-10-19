@@ -1,4 +1,4 @@
-import {createStyles, Theme} from "@material-ui/core";
+import { createStyles, Theme } from "@material-ui/core";
 
 export const stylesDefault = (theme: Theme) =>
     createStyles({
@@ -106,7 +106,9 @@ export const styleSetTheme = (theme: Theme) =>
                 maxWidth: 600
             }
         },
-        card: {},
+        card: {
+            
+        },
         headerAvatar: {
             fontSize: 'xx-large',
             color: theme.palette.text.secondary

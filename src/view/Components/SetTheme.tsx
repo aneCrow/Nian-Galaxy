@@ -1,31 +1,20 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import {
-    Button,
-    Avatar, GridList, GridListTile, Divider,
-    Radio,
-    Typography,
-    Paper,
-    Card,
-    CardHeader,
-    CardContent,
-    CardActions,
+    GridList, GridListTile, Divider,
+    Typography, Paper,
+    Card, CardHeader, CardContent, CardActions,
+    Avatar, Button, Radio, Switch, IconButton,
     FormControlLabel,
-    ExpansionPanel,
-    ExpansionPanelActions,
-    ExpansionPanelDetails,
-    ExpansionPanelSummary,
-    Switch,
-    withStyles,
-    WithStyles,
-    Color, Theme, createMuiTheme, IconButton
+    ExpansionPanel, ExpansionPanelActions, ExpansionPanelDetails, ExpansionPanelSummary,
+    withStyles, WithStyles, Color, Theme, createMuiTheme
 } from "@material-ui/core";
-import {FormatPaint as FormatPaintIcon, ExpandMore as ExpandMoreIcon} from '@material-ui/icons'
+import { FormatPaint as FormatPaintIcon, ExpandMore as ExpandMoreIcon } from '@material-ui/icons'
 import * as Colors from '@material-ui/core/colors';
-import {styleSetTheme as styles} from "../styles";
-import {appPalette, appTheme, StoryState} from "../../redux/initialState";
-import {setPalette} from "../../redux/actions";
+import { styleSetTheme as styles } from "../styles";
+import { appPalette, appTheme, StoryState } from "../../redux/initialState";
+import { setPalette } from "../../redux/actions";
 // @ts-ignore
 import classnames from 'classnames';
 
@@ -47,53 +36,36 @@ class SetTheme extends React.Component<Props, States> {
             expansionMode: false,
         };
     }
-
-    handleSetTheme = () => {
-        this.props.setPalette({palette: {type: 'light'}});
-    };
-    handleSetThemeB = () => {
-        this.props.setPalette({palette: {type: 'dark'}});
-    };
+    
     handleColorTargetChange = (e: any) => {
-        this.setState({colorTarget: e.target.value})
+        this.setState({ colorTarget: e.target.value })
     };
     handlePickColorClick = (color: any) => {
         switch (this.state.colorTarget) {
             case 'primary': {
-                this.props.setPalette({palette: {primary: color}});
+                this.props.setPalette({ palette: { primary: color } });
             }
                 break;
             case 'secondary': {
-                this.props.setPalette({palette: {secondary: color}});
+                this.props.setPalette({ palette: { secondary: color } });
             }
                 break;
         }
     };
 
     render() {
-        const {classes}: any = this.props;
+        const { classes }: any = this.props;
         const theme = createMuiTheme(this.props.appTheme);
         return (
             <div className={classes.root}>
-                <div>
-                    <Link to={'/'}>
-                        <Button variant='contained' color='secondary'>
-                            Home
-                        </Button>
-                    </Link>
-                    <Button variant='contained' onClick={this.handleSetTheme}>light</Button>
-                    <Button variant='contained' onClick={this.handleSetThemeB}>dark</Button>
-                    <Button variant='contained' onClick={() => this.setState({})}>update</Button>
-                </div>
                 <Card className={classes.card}>
                     {/*header*/}
                     <CardHeader
-                        avatar={<FormatPaintIcon className={classes.headerAvatar}/>}
-                        className={classes.cardHeader}
+                        avatar={<FormatPaintIcon className={classes.headerAvatar} />}
                         title="Change Theme Style"
                         subheader="set your own style to this app"
                     />
-                    <Divider className={classes.divider}/>
+                    <Divider className={classes.divider} />
                     {/*colors panel*/}
                     <CardContent>
                         <Typography className={classes.colors_colorsCaption}>default colors</Typography>
@@ -110,16 +82,10 @@ class SetTheme extends React.Component<Props, States> {
                                     color="default"
                                     checked={theme.palette.type === 'light'}
                                     onChange={() => {
-                                        this.props.setPalette({
-                                            palette: {
-                                                type: theme.palette.type === 'light' ?
-                                                    'dark' : 'light'
-                                            }
-                                        });
+                                        this.props.setPalette({palette: {type: theme.palette.type === 'light' ?'dark' : 'light'}});
                                     }}
                                 />}
-                                label={theme.palette.type === 'light' ?
-                                    'light' : 'dark'}
+                                label={theme.palette.type === 'light' ?'light' : 'dark'}
                                 labelPlacement="start"
                             />
                         </div>
@@ -128,9 +94,9 @@ class SetTheme extends React.Component<Props, States> {
                                 className={classes.options_firstControlLabel}
                                 control={
                                     <Button className={classes.colors_colorCell}
-                                            onClick={() => this.setState({colorTarget: 'primary'})}>
+                                        onClick={() => this.setState({ colorTarget: 'primary' })}>
                                         <svg className={classes.colors_colorCell}>
-                                            <rect className={classes.colors_colorCell} fill={theme.palette.primary.main}/>
+                                            <rect className={classes.colors_colorCell} fill={theme.palette.primary.main} />
                                         </svg>
                                     </Button>
                                 }
@@ -159,7 +125,7 @@ class SetTheme extends React.Component<Props, States> {
                             secondary
                         </Typography>
                     </CardContent>
-                    <Divider className={classes.divider}/>
+                    <Divider className={classes.divider} />
                     {/*footer controls*/}
                     <CardActions>
                         <FormControlLabel
@@ -169,11 +135,11 @@ class SetTheme extends React.Component<Props, States> {
                                     disableRipple
                                     className={classnames(
                                         classes.expands_expand,
-                                        {[classes.expands_expandOpen]: this.state.expansionMode}
+                                        { [classes.expands_expandOpen]: this.state.expansionMode }
                                     )}
-                                    onClick={() => this.setState({expansionMode: !this.state.expansionMode})}
+                                    onClick={() => this.setState({ expansionMode: !this.state.expansionMode })}
                                 >
-                                    <ExpandMoreIcon/>
+                                    <ExpandMoreIcon />
                                 </IconButton>}
                             label={
                                 this.state.expansionMode ?
@@ -200,14 +166,14 @@ const ColorSheet = (classes: any, handlePickColor: any) => {
     let _colors: any[] = [];
     for (const value in Colors) {
         // @ts-ignore
-        const color:any = Colors[value];
-        const classesColorCell=classes.colors_colorCell;
+        const color: any = Colors[value];
+        const classesColorCell = classes.colors_colorCell;
         if (color[500])
             _colors.push(
                 <GridListTile key={value} cols={1}>
                     <Button className={classesColorCell} onClick={() => handlePickColor(color)}>
                         <svg className={classesColorCell}>
-                            <rect className={classesColorCell} fill={color[500]}/>
+                            <rect className={classesColorCell} fill={color[500]} />
                         </svg>
                     </Button>
                 </GridListTile>
