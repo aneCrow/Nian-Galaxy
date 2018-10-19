@@ -1,4 +1,6 @@
 import {combineReducers} from "redux";
+import {Theme} from "@material-ui/core";
+
 import * as actions from './actions';
 import {initialState, appTheme, appPalette} from './initialState';
 import {extendObj} from "./util";

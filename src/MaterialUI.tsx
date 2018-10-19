@@ -3,12 +3,12 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import {CssBaseline} from '@material-ui/core';
-import {appTheme,StoryState} from './redux/initialState';
+import {StoryState,appTheme} from './redux/initialState';
 import 'typeface-roboto';
 import {setTheme} from "./redux/actions";
 
 type Props = {
-    appTheme: undefined|appTheme;
+    appTheme: appTheme;
 }
 
 //Material UI装饰根组件

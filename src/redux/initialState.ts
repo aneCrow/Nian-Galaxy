@@ -1,4 +1,4 @@
-import {Color, PaletteType} from "@material-ui/core";
+import {Color, PaletteType,Theme, createMuiTheme} from "@material-ui/core";
 import * as colors from "@material-ui/core/colors";
 import {TypeBackground, TypeDivider, TypeText} from "@material-ui/core/styles/createPalette";
 import {Spacing} from "@material-ui/core/styles/spacing";
@@ -30,7 +30,6 @@ export const initialState: StoryState = {
         palette: {
             primary: colors.brown,
             secondary: colors.amber,
-            error: colors.red,
             type: 'dark',
         }
     },

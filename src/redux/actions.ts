@@ -1,3 +1,4 @@
+import {Color, PaletteType,Theme, createMuiTheme} from "@material-ui/core";
 import {appTheme,appPalette} from "./initialState";
 
 export const THEME_SET = 'THEME_SET';

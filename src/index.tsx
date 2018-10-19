@@ -9,10 +9,10 @@ import Dev from './view/DevIndex';
 import Intro from './view/Intro';
 
 const Index = ({store}:any) => (
-    <Provider store={store} /*容器：提供所有子组件redux的store*/>
+    <Provider store={store}>{/*容器：提供所有子组件redux的store*/}
         {/*TODO 更换BrowserRouter basename={docUrl}*/}
-        <HashRouter/*容器: 路由*/>
-            <MaterialUI/*容器：提供所有ui组件theme*/>
+        <HashRouter>{/*容器: 路由*/}
+            <MaterialUI>{/*容器：提供所有ui组件theme*/}
                 <Switch>
                     <Route exact path="/" component={Intro}/>
                     <Route path="/home" component={App}/>
