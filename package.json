@@ -1,6 +1,6 @@
 {
-  "name": "WebNote",
-  "version": "1.0.0",
+  "name": "NianGalaxy",
+  "version": "0.0.2",
   "scripts": {
     "dev": "next",
     "build": "next build",
