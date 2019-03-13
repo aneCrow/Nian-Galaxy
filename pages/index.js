@@ -1,19 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 
+import Style_bgColor from '../components/style/bgColor';
+
 export default class extends React.Component{
     constructor(){
         super();
-        this.state = {
-            bgColor: this.color()
-        }
+        this.state = {}
     }
 
-    color = () => {
-        const colorList = [ '#EEAB46', '#EFDCC8', '#EEAFAB', '#6D9F99', '#EC666A' ];
-        const random = Math.floor(Math.random()*(colorList.length+1));
-        return colorList[ random ];
-    };
     BeakerArchive = async () => {
         try {
             // if(!beaker)throw '';
@@ -22,30 +17,30 @@ export default class extends React.Component{
                                                                isSaved: true
                                                            });
             console.dir(ownArchives);
-            return <div><ul>{ownArchives.map((item) =>
-                                            <li>
-                                                <button>{item.title}</button>
-                                                <p>{item.url}</p>
-                                            </li>
-            )}</ul></div>;
+            return <div>
+                <ul>{ownArchives.map((item) =>
+                                         <li>
+                                             <button>{item.title}</button>
+                                             <p>{item.url}</p>
+                                         </li>
+                )}</ul>
+            </div>;
         }
         catch(e) {
             return null;
         }
     };
-    createHandle = async () => {
-        const archive = await DatArchive.selectArchive()
-    };
 
     render(){
-        return (
-            <div className="div position-mid">
-                <h1>Nian-Galaxy</h1>
-                {/*{this.BeakerArchive()}*/}
-                <button onClick={this.createHandle}>create new note</button>
-                <Link href="/test"><a><br/>test</a></Link>
-                <style jsx>{
-                    `
+        return <div className="div position-mid">
+            <h1>Nian-Galaxy</h1>
+            {/*{this.BeakerArchive()}*/}
+            <Link href="/create-note">
+                <button>new note</button>
+            </Link>
+            <Link href="/test"><a><br/>test</a></Link>
+            <style jsx>{
+                `
                         .div {
                             width: 200px;
                             height: 100px;
@@ -54,15 +49,8 @@ export default class extends React.Component{
                             margin: auto
                         }
                     `
-                }</style>
-                <style jsx global>{
-                    `
-                        body {
-                            background: ${this.state.bgColor}
-                        }
-                    `
-                }</style>
-            </div>
-        )
+            }</style>
+            <Style_bgColor/>
+        </div>
     }
 }
