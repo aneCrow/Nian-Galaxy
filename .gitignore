@@ -1,8 +1,7 @@
 # Built application files
-/node_modules/*
-/*/build/
-/.next/*
-/out/*
+node_modules/*
+*/build/
+.next/*
 
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
@@ -18,7 +17,7 @@ local.properties
 .signing/
 
 # User-specific configurations
-/.idea/*
+.vs/
 .idea/
 .idea/libraries/
 .idea/workspace.xml
