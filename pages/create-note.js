@@ -4,7 +4,7 @@ import NoteBookList from "../components/NoteList";
 export default class extends React.Component{
     constructor() {
         super();
-        this.state = {//TODO:组件实例的this会丢失
+        this.state = {
             title: 'New Note',
             bio: '',
             done: false
@@ -16,7 +16,6 @@ export default class extends React.Component{
     onChange (event) {
         const current = event.currentTarget;
         this.setState({[current.name] : current.value});
-        console.log('1');
     };
     async create (event) {
         this.setState({done:true});
@@ -41,6 +40,7 @@ export default class extends React.Component{
         } catch (e) {
             console.error(e);
         }
+        this.setState();
     };
 
     render(){

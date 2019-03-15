@@ -7,7 +7,6 @@ import Style_bgColor from '../components/style/bgColor';
 export default ()=> <div className="div position-mid">
         <h1>Nian-Galaxy</h1>
         <NoteBookList />
-        <button onClick={()=>DatArchive.selectArchives()}>load note</button>{/*TODO:添加已有记本*/}
         <Link href="/create-note">
             <button>new note</button>
         </Link>
