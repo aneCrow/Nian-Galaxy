@@ -26,8 +26,8 @@ const Booklist = props => {
                 <div>
                     <ul>
                         {list.notes.map((item,index) => domItem(item,index))}
+                        <li>{addButton()}</li>
                     </ul>
-                    {addButton()}
                 </div>
             )
         }

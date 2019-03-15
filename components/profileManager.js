@@ -1,3 +1,4 @@
+// import {feed, followgraph} from 'dat://unwalled.garden'
 class dataCenter{
     static prefab = {
         notebook:{
@@ -113,7 +114,9 @@ export default class profileManager {
         }
     };
     //记本clean方法,清理所有
-    static noteClean = ()=>{
+    static noteClean = () => {
         dataCenter.cleanNoteListLS();
-    }
+    };
+    static test = () => {
+    };
 }
