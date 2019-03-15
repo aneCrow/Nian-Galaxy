@@ -1,29 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NoteBookList from "../pages";
+import PMG from "./profileManager";
 
 const addButton = () => {
     const onClick = async () => {
         try {
-            const archive = await DatArchive.selectArchive({
-                filters: {
-                    isOwner: true,
-                    type: ["profile", "nian-notebook-profile"]
-                },
-            });
-            const info = await archive.getInfo();
-            const storageItem = [{title: info.title, url: info.url}];
-            const lastItem = JSON.parse(localStorage.getItem('nian-notebooks'));
-            if (lastItem && lastItem.notebooks) {
-                for (let item of lastItem.notebooks) {
-                    storageItem.push(item);
-                }
-            }
-            localStorage.setItem('nian-notebooks', JSON.stringify({notebooks: storageItem}));
+            await PMG.noteSelect(localStorage);
         } catch (e) {
             console.error(e);
         }
-        this.setState({});
     };
     return <button onClick={onClick}>添加已有记本</button>
 };
@@ -35,12 +20,12 @@ const domItem = (data,key) => <li key={key}>
 const Booklist = props => {
     // const list = localStorage.getItem('nian-books');
     try {
-        const list = JSON.parse(localStorage.getItem('nian-notebooks'));
-        if(list && list.notebooks){
-        return (
+        const list = PMG.getNoteList();
+        if(list && list.notes){
+            return (
                 <div>
                     <ul>
-                        {list.notebooks.map((item,index) => domItem(item,index))}
+                        {list.notes.map((item,index) => domItem(item,index))}
                     </ul>
                     {addButton()}
                 </div>
