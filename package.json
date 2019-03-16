@@ -1,5 +1,5 @@
 {
-  "name": "NianGalaxy",
+  "name": "nian-galaxy",
   "version": "0.0.2",
   "scripts": {
     "dev": "next",
@@ -8,6 +8,7 @@
     "export": "npm run build && next export"
   },
   "dependencies": {
+    "@beaker/webdb": "latest",
     "animejs": "latest",
     "next": "latest",
     "react": "latest",
