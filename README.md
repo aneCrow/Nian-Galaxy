@@ -3,7 +3,6 @@
 >示例页面
 dat://
 
----
 ### API
 
 #### NianLib.user
@@ -16,15 +15,15 @@ dat://
 - `optnotes`
   - `title`
   - `url`
-  
-``
+
+```
 NianLib.user.setProfile({
-  name: 'boo',
-  bio: 'My secret Nian user',
-  arvatar: 'dat://boo/img.jpg',
-  contact: 'boo@bar.com , dat://boo'
-})
-``
+  name: 'boo',  
+  bio: 'My secret Nian user',  
+  arvatar: 'dat://boo/img.jpg',  
+  contact: 'boo@bar.com , dat://boo'  
+})  
+```
 ##### .getProfile()
 ###### return Object
 ##### .updateProfile(opt?)
@@ -42,7 +41,7 @@ NianLib.user.setProfile({
 ### User
 ##### localStorage/nian-userProfiles数据结构
 ###### 存储着基本信息，留言或回复时留下的数据
-``
+```
 {
   name: 'foo',          //必须
   bio: 'bar',
@@ -53,13 +52,13 @@ NianLib.user.setProfile({
     url: 'DATurl'       //必须
   }]
 }
-``
+```
 
 ---
 ### Note Archive
 
 ##### 总文件结构
-``
+```
 /dat.json               - Beaker metadata file
 /thumb.(jpg|png)        - 缩略图(avatar)256x256
 /cover.(jpg|png)        - 封面文件
@@ -68,10 +67,10 @@ NianLib.user.setProfile({
 /data/comments/         - Contains unwalled.garden/comment records
 /data/votes/            - Contains vote records (see "the votes folder")
 /data/known-sites/      - Contains cached copies of referenced sites' metadata
-``
+```
 ##### /data/noteProfiles.json数据结构
 > createdAt =()=> (new Date()).toISOString
-``
+```
 {
   "createdAt": "2018-12-07T02:52:11.947Z",
   "title": "foo",
@@ -79,13 +78,13 @@ NianLib.user.setProfile({
   "description": "baz"
   }
 }
-``
+```
 ##### /data/feed/{createdAt}.json数据结构
-``
+```
 {
   "createdAt": "2018-12-07T02:52:11.947Z",
   "content": {
     "body": "foo"
   }
 }
-``
+```
