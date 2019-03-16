@@ -11,14 +11,14 @@ class dataCenter{
         },
 
     };
-    static getNoteListLS = () => JSON.parse(localStorage.getItem(dataCenter.prefab.notebook.storage.mainName));
-    static setNoteListLS = (newList)=> localStorage.setItem(
+    static getNoteListLS = () => JSON.parse(window.localStorage.getItem(dataCenter.prefab.notebook.storage.mainName));
+    static setNoteListLS = (newList)=> window.localStorage.setItem(
         dataCenter.prefab.notebook.storage.mainName,
         JSON.stringify({
             [dataCenter.prefab.notebook.storage.listName]: newList
         })
     );
-    static cleanNoteListLS =()=> localStorage.removeItem(dataCenter.prefab.notebook.storage.mainName);
+    static cleanNoteListLS =()=> window.localStorage.removeItem(dataCenter.prefab.notebook.storage.mainName);
     static noteListAdd = async (archive)=>{
         const info = await archive.getInfo();
         const newItem = {title: info.title, url: info.url};
@@ -59,7 +59,7 @@ export default class profileManager {
         let archive;
         try {
             if(data.title==='') data.title = 'NewNote';
-            const _archive = await DatArchive.create({
+            const _archive = await window.DatArchive.create({
                 title: dataCenter.prefab.notebook.preTitle + data.title,
                 description: data.bio,
                 type: dataCenter.prefab.notebook.type,
@@ -78,7 +78,7 @@ export default class profileManager {
     static noteLoad = async (url) => {
         let archive;
         try {
-            const _archive = await DatArchive.load(url);
+            const _archive = await window.DatArchive.load(url);
             if(dataCenter.noteCheck(_archive)){
                 archive = _archive;
                 dataCenter.setNoteListLS(await dataCenter.noteListAdd(archive));
@@ -92,7 +92,7 @@ export default class profileManager {
     static noteSelect = async () => {
         let archive;
         try {
-            const _archive = await DatArchive.selectArchive({
+            const _archive = await window.DatArchive.selectArchive({
 
             });
             if(dataCenter.noteCheck(_archive)){
@@ -107,7 +107,7 @@ export default class profileManager {
     //记本remove方法，移除单个记本
     static noteRemove = async (url) => {
         try {
-            const archive = await DatArchive.load(url);
+            const archive = await window.DatArchive.load(url);
             dataCenter.setNoteListLS(await dataCenter.noteListRemove(archive));
         } catch (e) {
             console.warn('remove note failed');
