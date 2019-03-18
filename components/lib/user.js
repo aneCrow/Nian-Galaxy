@@ -27,7 +27,7 @@ export default class LibNianUserAPI {
             if(profile.contact)assert(typeof profile.contact === 'string', 'The .contact attribute must be a string');
             if(profile.notes){
                 assert(Array.isArray(profile.notes) , 'The .notes attribute must be an array');
-                forEach(item=>{
+                profile.notes.forEach(item=>{
                     assert(item && typeof item === 'object', 'Every value in the .notes array must be an object');
                     assert(typeof item.url === 'string', 'Every object in the .notes array must include a .url string');
                     if (item.title) assert(typeof item.title === 'string', 'Every .title in the .notes objects must be a string');
