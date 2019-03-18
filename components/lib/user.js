@@ -1,14 +1,22 @@
 import assert from "assert";
-import {getLocalStorage, setLocalStorage,pushItemWithDiffKey} from "./util";
+import {getLocalStorage, setLocalStorage,removeLocalStorage,pushArrayItemWithDiffKey} from "./util";
 
-export default class {
+export default class LibNianUserAPI {
     constructor(lib){
         this.lib = lib;
         //bind
         this.setProfile = this.setProfile.bind(this);
         this.addNote = this.addNote.bind(this);
-        //util
-        this.getNoteProfile = async url => await this.lib.WebDB.noteProfile.get(url+'/data/noteProfiles.json')
+    }
+    getProfile(){
+        return getLocalStorage('nian-userProfiles')
+    }
+    updateProfile(profile){
+        //TODO: 根据notes列表里的url更新对应title
+        setLocalStorage('nian-userProfiles',profile)
+    }
+    removeProfile(){
+        removeLocalStorage('nian-userProfiles');
     }
     setProfile(profile={name,notes:[]}){
         const validate=profile=>{
@@ -32,22 +40,15 @@ export default class {
             this.updateProfile(profile);
         }
     }
-    getProfile(){
-        return getLocalStorage('nian-userProfiles')
-    }
-    updateProfile(profile){
-        //TODO: 根据notes列表里的url更新对应title
-        setLocalStorage('nian-userProfiles',profile)
-    }
     async addNote(url){
         const validate=url=>{
             assert(typeof url === 'string', 'The url is required and must be an string');
             return true;
         };
         if(validate(url)){
-            const newNotes = pushItemWithDiffKey(
+            const newNotes = pushArrayItemWithDiffKey(
                 {
-                    title: await this.getNoteProfile(url).title,
+                    title: await this.lib.note.getInfo(url).title,
                     url:url
                 },
                 this.getProfile().notes,
@@ -57,5 +58,11 @@ export default class {
             userProfile.notes = newNotes;
             this.updateProfile(userProfile);
         }
+    }
+    removeNote(url){
+
+    }
+    cleanNote(){
+
     }
 }

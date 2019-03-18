@@ -3,9 +3,12 @@
 >示例页面
 dat://
 
-### API
+---
+API
+---
+- #### NianLib.user
+######
 
-#### NianLib.user
 ##### .setProfile(opt?)
 ###### return void
 - `opt.name` String.必须，用户名称
@@ -26,17 +29,49 @@ NianLib.user.setProfile({
 ```
 ##### .getProfile()
 ###### return Object
+
+##### .setProfile(opt)
+###### return void
+
 ##### .updateProfile(opt?)
 ###### return void
+
+##### .removeProfile()
+###### return void
+
 ##### .addNote(url)
 ###### return void
-##### .removeNote(url) //TODO
-###### return void
-##### .cleanNote() //TODO
+
+##### .removeNote(url)
 ###### return void
 
-#### NianLib.note
+##### .cleanNote()
+###### return void
 
+- #### NianLib.note
+######
+
+##### .getInfo()
+###### return void
+
+##### .setProfile(opt)
+###### return void
+
+##### .addFeed(opt)
+###### return void
+
+##### .editFeed(url,opt)
+###### return void
+
+##### .removeFeed(url)
+###### return void
+
+##### .cleanFeed()
+###### return void
+
+
+---
+Archive组成
 ---
 ### User
 ##### localStorage/nian-userProfiles数据结构
@@ -54,7 +89,6 @@ NianLib.user.setProfile({
 }
 ```
 
----
 ### Note Archive
 
 ##### 总文件结构
@@ -62,7 +96,7 @@ NianLib.user.setProfile({
 /dat.json               - Beaker metadata file
 /thumb.(jpg|png)        - 缩略图(avatar)256x256
 /cover.(jpg|png)        - 封面文件
-/data/noteProfiles.json    - 记本 metadata file
+/data/noteProfiles.json - 记本 metadata file
 /data/feed/             - Contains unwalled.garden/post records
 /data/comments/         - Contains unwalled.garden/comment records
 /data/votes/            - Contains vote records (see "the votes folder")
