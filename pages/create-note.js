@@ -1,7 +1,7 @@
 import React from "react";
 import PMG from "../components/profileManager";
 
-import NoteList from "../components/NoteList";
+import NoteList from "../components/page/NoteList";
 
 export default class extends React.Component{
     constructor() {

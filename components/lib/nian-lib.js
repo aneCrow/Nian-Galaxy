@@ -1,18 +1,20 @@
 import WebDB from "@beaker/webdb";
 import assert from "assert";
 import LibNianUserAPI from "./user";
+import LibNianNoteAPI from "./note";
+
 
 import {getLocalStorage, createdAt, setLocalStorage} from "./util";
 
-export default class {
+export default class NianLib {
     constructor(DatArchive) {
         this.DatArchive = DatArchive;
         this.webDB = new WebDB('NianGalaxy',DatArchive);
+        initWebDB(this);
+        this.userState = {};
+        //导入其他API
         this.user = new LibNianUserAPI(this);
-        //
-        defineTables (this.webDB);
-        //setHooks(this);
-        window.NianLib = this;
+        this.note = new LibNianNoteAPI(this);
     }
 
 
@@ -22,6 +24,11 @@ export default class {
         await webDB.indexArchive(archive);
         //检查文件结构
     }
+}
+//WebDB初始化
+function initWebDB(lib) {
+    defineTables (lib.webDB);
+    setHooks (lib);
 }
 //WebDB定义模板
 function defineTables (webDB){
@@ -68,7 +75,7 @@ function defineTables (webDB){
 }
 //WebDB消息钩子
 function setHooks(lib) {
-    const db = lib.db;
+    const db = lib.webDB;
     const consoleDebug = console.debug || console.log;
     db.on('open-failed', err => console.error('Database failed to open.', err));
     db.on('indexes-reset', () => consoleDebug('Rebuilding indexes.'));
