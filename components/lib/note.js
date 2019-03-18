@@ -2,7 +2,7 @@ export default class LibNianNoteAPI {
     constructor(lib){
         this.lib = lib;
 
-        this.getNoteProfile = this.getNoteProfile.bind(this);
+        this.getInfo = this.getInfo.bind(this);
     }
     async getInfo(url) {
         await this.lib.WebDB.noteProfile.get(url + '/data/noteProfiles.json')

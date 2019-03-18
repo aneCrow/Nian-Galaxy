@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PMG from "./profileManager";
+import PMG from "../profileManager";
 
 const addButton = () => {
     const onClick = async () => {

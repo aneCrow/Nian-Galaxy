@@ -11,11 +11,10 @@ export default class NianLib {
         this.DatArchive = DatArchive;
         this.webDB = new WebDB('NianGalaxy',DatArchive);
         initWebDB(this);
+        this.userState = {};
         //导入其他API
         this.user = new LibNianUserAPI(this);
         this.note = new LibNianNoteAPI(this);
-
-        window.NianLib = this;
     }
 
 
