@@ -1,47 +1,53 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import PMG from "../profileManager";
+import React from "react";
+import Link from "next/link";
 
-const addButton = () => {
-    const onClick = async () => {
-        try {
-            await PMG.noteSelect(localStorage);
-        } catch (e) {
-            console.error(e);
-        }
-    };
-    return <button onClick={onClick}>添加已有记本</button>
-};
-const domItem = (data,key) => <li key={key}>
-    <a href={data.url}>
-        {data.title?data.title : 'notebook'}
-    </a>
-</li>;
-const Booklist = props => {
-    // const list = localStorage.getItem('nian-books');
-    try {
-        const list = PMG.getNoteList();
-        if(list && list.notes){
-            return (
-                <div>
-                    <ul>
-                        {list.notes.map((item,index) => domItem(item,index))}
-                        <li>{addButton()}</li>
-                    </ul>
-                </div>
-            )
-        }
-    } catch (e) {
-        console.error(e);
+
+export default class NoteList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+        };
+        this.onAdd = this.onAdd.bind(this);
+        this.onClean = this.onClean.bind(this);
     }
-    return <div>
-        you did't have any note here
-        {addButton()}
-    </div>;
-};
+    componentWillMount() {
+        this.lib = window.NianLib;
+        const profile = this.lib.user.getProfile();
+        this.setState({
+            notes: profile?profile.notes:[]
+        });
+    }
+    async onAdd() {
+        await this.lib.user.addNoteWithSelect();
+        const profile = this.lib.user.getProfile();
+        this.setState({
+            notes: profile?profile.notes:[]
+        });
+    }
+    onClean(){
+        this.lib.user.cleanNotes();
+        this.setState({
+            notes: []
+        });
+    }
 
-// Booklist.propTypes = {
-//
-// };
+    domItem(data, key) {
+        return <li key={key}>
+            <Link href={data.url}>
+                <a>{data.title ? data.title : 'notebook'}</a>
+            </Link>
+        </li>;
+    }
 
-export default Booklist;
+    render() {
+        const {notes} = this.state;
+            return <div>
+                <ul>
+                    {notes.length===0?'nothing here':notes.map((item, index) => this.domItem(item, index))}
+                    <li><button onClick={this.onAdd}>添加已有记本</button></li>
+                    <li><button onClick={this.onClean}>清除所有</button></li>
+                </ul>
+            </div>
+
+    }
+}

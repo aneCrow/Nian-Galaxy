@@ -26,17 +26,19 @@ export default class NianLib {
     }
 }
 //WebDB初始化
-function initWebDB(lib) {
+async function initWebDB(lib) {
     defineTables (lib.webDB);
     setHooks (lib);
+    await lib.webDB.open();
 }
 //WebDB定义模板
 function defineTables (webDB){
     // /data/noteProfiles.json
-    webDB.define('noteProfiles', {
+    webDB.define('noteProfile', {
         // validate required attributes before indexing
         validate(record) {
-            assert(typeof record.createdAt === 'number', 'The .createdAt attribute is required and must be a number');
+            assert(typeof record.createdAt === 'string', 'The .createdAt attribute is required and must be a number');
+            assert(typeof record.url === 'string', 'The .url attribute is required and must be a string');
             if (record.title) assert(record.title && typeof record.title === 'string', 'The .title attribute must be a string');
             if (record.author) assert(record.author && typeof record.author === 'string', 'The .author attribute must be a string');
             if (record.description) assert(record.description && typeof record.description === 'string', 'The .description attribute must be a string');
@@ -46,13 +48,14 @@ function defineTables (webDB){
         index: ['title', 'author'],
         // files to index
         filePattern: [
-            '/data/noteProfiles.json'
+            '/data/noteProfile.json'
         ],
         serialize (record) {
             return {
                 title: record.title,
                 author: record.author,
                 description: record.description,
+                url: record.url,
                 createdAt: record.createdAt
             }
         }

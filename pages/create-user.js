@@ -16,9 +16,6 @@ export default class extends React.Component {
     }
     componentDidMount(){
         if(window&&!window.NianLib) window.NianLib = new NianLibAPI(DatArchive);
-        if(this.state.isReady){
-            return;
-        }
         this.lib = window.NianLib;
         this.setState({profile:loadUserProfile(),isReady:true});
     }
@@ -68,7 +65,6 @@ export default class extends React.Component {
                     }
                 `
             }</style>
-            <Style_bgColor/>
         </div>
     }
 }

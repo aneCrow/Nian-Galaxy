@@ -1,5 +1,5 @@
 import assert from "assert";
-import {getLocalStorage, setLocalStorage,removeLocalStorage,pushArrayItemWithDiffKey} from "./util";
+import {getLocalStorage, pushArrayItemWithDiffKey, removeLocalStorage, setLocalStorage} from "./util";
 
 export default class LibNianUserAPI {
     constructor(lib){
@@ -7,6 +7,7 @@ export default class LibNianUserAPI {
         //bind
         this.setProfile = this.setProfile.bind(this);
         this.addNote = this.addNote.bind(this);
+        this.addNoteWithSelect = this.addNoteWithSelect.bind(this);
     }
     getProfile(){
         return getLocalStorage('nian-userProfiles')
@@ -59,10 +60,24 @@ export default class LibNianUserAPI {
             this.updateProfile(userProfile);
         }
     }
+    async addNoteWithSelect(){
+        await this.lib.note.loadArchiveWithSelect();
+        if(!this.lib.note.archive)return;
+        const noteProfile = await this.lib.note.getInfo();
+        const userProfile = this.getProfile();
+        const newItem = {
+            title: noteProfile.title,
+            url: noteProfile.url
+        };
+        userProfile.notes = pushArrayItemWithDiffKey(newItem, userProfile.notes, 'url');
+        this.updateProfile(userProfile);
+    }
     removeNote(url){
 
     }
-    cleanNote(){
-
+    cleanNotes(){
+        const userProfile = this.getProfile();
+        userProfile.notes = [];
+        this.updateProfile(userProfile);
     }
 }
