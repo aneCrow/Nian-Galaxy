@@ -8,12 +8,23 @@ export default class LibNianUserAPI {
         this.setProfile = this.setProfile.bind(this);
         this.addNote = this.addNote.bind(this);
         this.addNoteWithSelect = this.addNoteWithSelect.bind(this);
+        this.updateProfile = this.updateProfile.bind(this);
     }
     getProfile(){
         return getLocalStorage('nian-userProfiles')
     }
-    updateProfile(profile){
-        //TODO: 根据notes列表里的url更新对应title
+    async updateProfile(profile){
+        const newNotes =[];
+        for(let item of profile.notes){
+            if(item){
+                await this.lib.note.loadArchive(await this.lib.DatArchive.load(item.url));
+                console.log();
+                const info = await this.lib.note.getInfo();
+                item.title = info.title;
+                newNotes.push(item)
+            }
+        }
+        profile.notes = newNotes;
         setLocalStorage('nian-userProfiles',profile)
     }
     removeProfile(){
@@ -41,24 +52,16 @@ export default class LibNianUserAPI {
             this.updateProfile(profile);
         }
     }
-    async addNote(url){
-        const validate=url=>{
-            assert(typeof url === 'string', 'The url is required and must be an string');
-            return true;
+    async addNote(archive){
+        if(!this.lib.note.archive)return;
+        const noteProfile = await this.lib.note.getInfo();
+        const userProfile = this.getProfile();
+        const newItem = {
+            title: noteProfile.title,
+            url: noteProfile.url
         };
-        if(validate(url)){
-            const newNotes = pushArrayItemWithDiffKey(
-                {
-                    title: await this.lib.note.getInfo(url).title,
-                    url:url
-                },
-                this.getProfile().notes,
-                "url"
-            );
-            const userProfile = this.getProfile();
-            userProfile.notes = newNotes;
-            this.updateProfile(userProfile);
-        }
+        userProfile.notes = pushArrayItemWithDiffKey(newItem, userProfile.notes, 'url');
+        this.updateProfile(userProfile);
     }
     async addNoteWithSelect(){
         await this.lib.note.loadArchiveWithSelect();

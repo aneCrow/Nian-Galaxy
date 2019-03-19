@@ -1,5 +1,4 @@
 import React from "react";
-import {createdAt} from "../components/lib/util";
 
 import Link from "next/link";
 import NoteList from "../components/page/NoteList";
@@ -50,8 +49,7 @@ export default class extends React.Component{
     async onCreate () {
         const profile = this.state.profile;
         profile.author = this.state.user.name;
-        profile.createdAt = createdAt();
-        console.dir(profile);
+        this.lib.note.createNote(profile);
 
         this.setState({profile:this.preProfile()});
     };
