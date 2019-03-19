@@ -70,7 +70,7 @@ export default class profileManager {
                 await profileManager.noteLoad(archive.url);
             }
         } catch (e) {
-            console.warn('create note failed');
+            console.warn('onCreate note failed');
         }
         return archive;
     };
