@@ -1,0 +1,12 @@
+diff a/components/test.js b/components/test.js	(rejected hunks)
+@@ -1 +0,7 @@
+-export default ()=><div>empty test</div>
+\ No newline at end of file
++import React from "react";
++
++export default class extends React.Component {
++    render() {
++        return <div>empty test</div>
++    }
++}
+\ No newline at end of file
