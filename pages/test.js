@@ -1,3 +1,7 @@
 import React from "react";
 
-export default props => <div>empty test:</div>;
+export default class extends React.Component{
+    render() {
+        return<div>empty test:</div>;
+    }
+}

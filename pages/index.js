@@ -2,8 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 
 import NoteBookList from "../components/page/NoteList";
-import Style_bgColor from '../components/style/bgColor';
-import NianLibAPI from "../components/lib/nian-lib";
 
 export default class extends React.Component {
     state={isReady: false};
@@ -31,7 +29,6 @@ export default class extends React.Component {
                     }
                 `
             }</style>
-            <Style_bgColor/>
         </div>
     }
 }
