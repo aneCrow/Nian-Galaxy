@@ -1,0 +1,16 @@
+diff a/components/lib/NianAPI.js b/components/lib/NianAPI.js	(rejected hunks)
+@@ -0,0 +1,13 @@
++export default class NianAPI {
++    constructor(test){
++        if(!NianAPI.instance){//单例模式
++            this.testd = test;
++            NianAPI.instance = this;
++        }
++        return NianAPI.instance;
++    }
++
++    test() {
++
++    }
++}
+\ No newline at end of file

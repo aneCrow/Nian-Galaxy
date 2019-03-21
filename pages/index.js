@@ -7,11 +7,13 @@ import NianLibAPI from "../components/lib/nian-lib";
 
 export default class extends React.Component {
     state={isReady: false};
-    componentDidMount(){
-        if(!window.NianLib) window.NianLib = new NianLibAPI(DatArchive);
-        this.setState({isReady: true});
-    }
+    // componentDidMount(){
+    //     if(!window.NianLib) window.NianLib = new NianLibAPI(DatArchive);
+    //     this.setState({isReady: true});
+    // }
     render() {
+        const {...props}=this;
+        console.dir(this.props);
         if(!this.state.isReady) return <div>loading</div>;
         return <div className="div position-mid">
             <h1>Nian-Galaxy</h1>
