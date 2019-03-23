@@ -1,47 +1,47 @@
 import React from "react";
-import PropTypes from "prop-types";
+import NianAPI from "../lib/NianAPI"
 
 export default class Loading extends React.Component {
-    // propTypes = {
-    //     // loaded: PropTypes.func.isRequired,
-    //     children: PropTypes.element.isRequired,
-    // };
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
-            showInfo:['start load']
+        this.state = {
+            allDone: false,
+            loadInfo: 'test'
         };
     }
-    componentDidMount(){
-        //建立定时器
-        this.timerID = setInterval(
-            this.loadingIcon,
-            300
-        );
-        const show = new Array(this.state.showInfo);
-        show.push('ready');
-        this.setState({isReady:true,showInfo:show});
+    componentDidMount() {
+        const api = new NianAPI(window.DatArchive);
+        api.setLoadDone = this.setDone;
+        this.setState({isReady: true});
     }
-    componentWillUnmount() {
-        clearInterval(this.timerID);//卸载定时器
-    }
-    loadingIcon=()=>{//会转的小玩意
-        if(!this.tickCount)this.tickCount=0;
-        const icon=['|','/','--','\\'];
-        this.setState({loadingIcon:icon[this.tickCount]});
-        (this.tickCount===3)?this.tickCount=0:this.tickCount++;
-    };
-    loaded=()=>this.setState({allDone: true});
-    render() {
-        const {isReady,allDone,showInfo,loadingIcon}=this.state;
-        const {children}=this.props;
 
-        return allDone ? children :  <div>
+    setDone = () => this.setState({allDone: true});
+    logInfo = even => this.setState({loadInfo: even.info});
+
+    render() {
+        const {isReady, allDone, loadInfo} = this.state;
+        const {children} = this.props;
+        const logProvider = {
+            allDone: allDone,
+            setDone: this.setDone,
+            logInfo: this.logInfo
+        };
+        //TODO:做是否存在用户和记本判断并给出快捷Link到目标url
+        return <LoadContext.Provider value={logProvider}>
+            {/*isReady之后载入页面模块以保证api正常载入*/}
+            {isReady ? children : null}
+            {allDone ? null : <div className="flex_center">
                 <h1>loading</h1>
-                <p className="border flex_center">{loadingIcon}</p>
-                {isReady?showInfo.map((item,index)=><p key={index}>{item}</p>):null}
-                {/*手动结束载入画面*/}
-                <br/><button onClick={this.loaded}>确认</button>
-            </div>
+                {/*<p className="border flex_center">{loadingIcon}</p>*/}
+                <p>{loadInfo}</p>
+                <br/>
+                <button onClick={this.setDone}>确认</button>{/*手动结束载入画面*/}
+            </div>}
+        </LoadContext.Provider>
     }
 }
+export const LoadContext = React.createContext({
+                                                   allDone: false,
+                                                   setDone: () => {},
+                                                   logInfo: () => {}
+                                               });

@@ -1,3 +1,4 @@
+/*实用杂项函数*/
 export function createdAt  ()  {
     const date = new Date();
     return date.toISOString();
@@ -26,4 +27,11 @@ export function removeArrayItemWithKey(newItem, lastList, key) {
         if(item[key]!==newItem[key])newList.push(item);
     }
     return newList;
+}
+
+//TODO:需要配置装饰器支持
+/*装饰器*/
+export function logThisFn(target,name,descriptor) {
+    console.log('run %s in %o',name,target);
+    return descriptor;
 }

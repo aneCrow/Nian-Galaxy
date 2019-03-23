@@ -1,45 +1,26 @@
 import React from "react";
-import App,{Container} from "next/app";
+import App, {Container} from "next/app";
 
-import {defaultTheme} from "../components/lib/context/theme-context";
-import {defaultUser,UserContext} from "../components/lib/context/user-context";
-
-import UITheme from "../components/page/UITheme";
 import Loading from "../components/page/Loading";
+import StateProvider from "../components/page/StateProvider";
+
 
 export default class app extends App {
-    state = {
-        theme:defaultTheme,
-        user:defaultUser
-    };
-    onThemeChange = (theme=defaultTheme) =>{
-        this.setState({theme:theme});
-    };
-    onUserChange = (user=defaultUser) =>{
-        this.setState({user:user});
-    };
+    static async getInitialProps({Component, router, ctx}) {//TODO:官方给的这个部分不是很理解是干嘛的
+        let pageProps = {};
+        if (Component.getInitialProps) {
+            pageProps = await Component.getInitialProps(ctx)
+        }
+        return {pageProps}
+    }
     render() {
-        const {Component, pageProps}=this.props;
-        const {theme,user}=this.state;
-        const UI = UITheme({
-            theme:theme,
-            setTheme:this.onThemeChange
-        });
-        const userContext={
-            user:user,
-            createUser:this.onUserChange,
-            editUser:this.onUserChange
-        };
-        return (
-            <Container>
-                <UI>
-                    <UserContext.Provider value={userContext}>
-                        <Loading>
-                            <Component {...pageProps}/>
-                        </Loading>
-                    </UserContext.Provider>
-                </UI>
-            </Container>
-        );
+        const {Component, pageProps} = this.props;
+        return <Container>
+            <StateProvider>
+                <Loading>{/*做了渲染拦截，这个组件是第一次render的终点*/}
+                    <Component {...pageProps} />
+                </Loading>
+            </StateProvider>
+        </Container>
     }
 }
