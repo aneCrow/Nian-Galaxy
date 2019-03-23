@@ -12,6 +12,9 @@ export default  ()=>{
                             flex-flow: column nowrap;
                             justify-content: center;
                             align-items: center;
-                    `
-    }</style>
+                        }
+                        .border {
+                            border:5px solid white;
+                        }
+    `}</style>
 }

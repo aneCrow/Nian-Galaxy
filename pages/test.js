@@ -1,13 +1,20 @@
 import React from "react";
-import {LoadContext} from "../components/page/Loading";
+import PropTypes from "prop-types";
+
 import NianAPI from "../components/lib/NianAPI";
 
+import {LoadConsumer} from "../components/page/Loading";
 
-export default class Test extends React.Component {
+class Test extends React.Component {
+    static propTypes = {
+        allDone: PropTypes.bool.isRequired,
+        setDone: PropTypes.func.isRequired,
+        logInfo: PropTypes.func.isRequired
+    };
     constructor(props) {
         super(props);
         this.state = {info: '其他页面和功能还没准备好'};
-        console.log('loaded %s',this.constructor.name);
+        console.dir(this.componentDidMount);
     }
 
 
@@ -18,15 +25,10 @@ export default class Test extends React.Component {
     }
 
     render() {//TODO:将这个Consumer和参数控制做成高阶组件给其他page做简单的loading控制
-        return <LoadContext.Consumer>{
-            ({allDone,setDone,logInfo}) =>
-                allDone ?
+        const {allDone}=this.props;
+        return allDone ?
                 <div>empty test:{this.state.info}</div> :
-                null
-        }</LoadContext.Consumer>
+                <div> </div>
     }
 }
-
-// export default props => <LogContext.Consumer>
-//     {({logInfo}) => <Test {...props} logFn={logInfo}/>}
-// </LogContext.Consumer>
+export default LoadConsumer(Test);
