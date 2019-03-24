@@ -14,6 +14,10 @@ export function removeLocalStorage (key){
 export function getLocalStorage (key){
     return JSON.parse(window.localStorage.getItem(key));
 }
+export function isObjectEQual(obj1,obj2) {
+    const json = obj => JSON.stringify(obj);
+    return json(obj1) === json(obj2);
+}
 export function pushArrayItemWithDiffKey(newItem, lastList, key) {
     const newList = new Array(newItem);
     for(let item of lastList){
