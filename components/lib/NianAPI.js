@@ -4,7 +4,7 @@ import assert from "assert";
 export default class NianAPI {
     constructor(DatArchive) {
         if (NianAPI.instance) return NianAPI.instance;//单例模式
-        //初始化项目
+        //初始化
         this.da = DatArchive;
         this.db = new WebDB('NianGalaxy', this.da);
         initWebDB(this.db)

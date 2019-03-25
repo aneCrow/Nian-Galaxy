@@ -1,4 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
+
+import NianAPI from "./lib/NianAPI"
 import {getLocalStorage, setLocalStorage, isObjectEQual} from "./lib/util"
 
 const defaultTheme = {
@@ -12,6 +15,7 @@ const defaultUser = {
     name: 'user',
     bio: '',
     avatar: '',
+    contact:'',
     notes: []
 };
 const defaultLog = {
@@ -29,22 +33,49 @@ export const LogContext = React.createContext({
                                               });
 
 class Theme extends React.Component {
+    static propTypes = {
+        nianContext: PropTypes.object.isRequired,
+    };
     componentDidMount() {
-        const {key, data, changeData} = this.props.nianContext;
+        const {key, changeData} = this.props.nianContext;
         const storage = getLocalStorage(key);
         if (storage) changeData(storage);
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {data: theme, key} = prevProps.nianContext;
+        setLocalStorage(key,theme);
+    }
+
+    toggleType = () => {
+        const {data: theme, changeData: setTheme} = this.props.nianContext;
+        if (theme.type === 'light')
+            theme.type = 'dark';
+        else theme.type = 'light';
+        setTheme(theme);
+    };
+    changeTheme = ({type, primary, secondary, background}) => {
+        const {data: theme, changeData: setTheme} = this.props.nianContext;
+        if (type) theme.type = type;
+        if (primary) theme.type = primary;
+        if (secondary) theme.type = secondary;
+        if (background) theme.type = background;
+        setTheme(theme);
+    };
 
     render() {
-        const {children,nianContext} = this.props;
-        const theme = nianContext.data;
+        const {children, nianContext} = this.props;
+        const theme = nianContext.data;//TODO:建立theme系统
         return (
             <React.Fragment>
                 <ThemeContext.Provider value={{
-                    theme: theme
+                    theme: theme,
+                    toggleType: this.toggleType,
+                    changeTheme: this.changeTheme,
+                    save:this.save
                 }}>
                     {children}
                 </ThemeContext.Provider>
+                {/*静态css*/}
                 <style jsx global>{`
                     body,html,#__next,#nian-layout {
                             width: 100%;
@@ -52,11 +83,13 @@ class Theme extends React.Component {
                             margin: 0;
                         }
                 `}</style>
+                {/*动态css*/}
                 <style jsx global>{`
                     html {
                         background:${theme.background}
                     }
                 `}</style>
+                {/*类名式通用全局css*/}
                 <style jsx global>{`
                         .flex_center {
                             width: 100%;
@@ -76,20 +109,53 @@ class Theme extends React.Component {
 }
 
 class User extends React.Component {
+    static propTypes = {
+        nianContext: PropTypes.object.isRequired,
+    };
     componentDidMount() {
-        const {key, data, changeData} = this.props.nianContext;
+        const {key, changeData} = this.props.nianContext;
         const storage = getLocalStorage(key);
         if (storage) changeData(storage);
+        else changeData([defaultUser]);
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {data: users, key} = prevProps.nianContext;
+        setLocalStorage(key,users);
     }
 
+    save() {
+    }
+
+    addUser = (user=defaultUser) => {
+        const {data: users, changeData: setUsers} = this.props.nianContext;
+        users.push(user);
+        setUsers(users);
+    };
+    editUserWithIndex = (user , index)=>{
+        const {data: users, changeData: setUsers} = this.props.nianContext;
+        users[index]=user;
+        setUsers(users);
+    };
+    removeUserWithIndex = index => {
+        const {data: users, changeData: setUsers} = this.props.nianContext;
+        users.splice(index,1);
+        setUsers(users);
+    };
+    cleanUsers = ()=>this.props.nianContext.changeData([defaultUser]);
+
     render() {
-        const {key, data, changeData} = this.props.nianContext;
+        const {children, nianContext} = this.props;
         return (
             <React.Fragment>
                 <UserContext.Provider value={{
-                    user: data
+                    users: nianContext.data,
+                    addUser: this.addUser,
+                    editUserWithIndex:this.editUserWithIndex,
+                    removeUserWithIndex: this.removeUserWithIndex,
+                    cleanUsers:this.cleanUsers,
+                    save:this.save
                 }}>
-                    {this.props.children}
+                    {children}
                 </UserContext.Provider>
             </React.Fragment>
         )
@@ -97,6 +163,9 @@ class User extends React.Component {
 }
 
 class Loading extends React.Component {
+    static propTypes = {
+        // nianContext: PropTypes.object.isRequired,
+    };
     state = {
         forceDone: false
     };
@@ -174,15 +243,14 @@ export default function withNian(Page) {
             super(props);
             this.state = {
                 theme: defaultTheme,
-                user: [defaultUser],
+                users: [defaultUser],
                 log: defaultLog
             };
-            this.stateChangeHandle = (data, key) => {
-                console.log('StateChange:%s,%o', key, data);
-                this.setState({[key]: data});
-            };
         }
-
+        stateChangeHandle = (data, key) => {
+            console.warn('StateChange:%s,%o', key, data);
+            this.setState({[key]: data});
+        };
         render() {
             const createSheet = key => {
                 return {
@@ -192,7 +260,7 @@ export default function withNian(Page) {
                 }
             };
             const themeObj = createSheet('theme');
-            const userObj = createSheet('user');
+            const userObj = createSheet('users');
             const logObj = createSheet('log');
             return (
                 <React.Fragment>
