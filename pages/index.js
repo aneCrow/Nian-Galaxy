@@ -1,23 +1,31 @@
-import React from 'react';
-import Router from "next/router";
+import React from "react";
+import PropTypes from "prop-types";
+import Link from "next/link";
 
-import Link from 'next/link';
+import withNian from "../components/withNian";
 
-import NoteBookList from "../components/page/NoteList";
+class Index extends React.Component {
+    static propTypes = {
+    };
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-export default class extends React.Component {
-    // componentDidMount(){
-    //     if(!window.NianLib) window.NianLib = new NianLibAPI(DatArchive);
-    //     this.setState({isReady: true});
-    // }
-    componentWillMount() {
-        Router.push('/test')}
+
+    componentDidMount() {
+        console.log('%s in ComponentDidMount',this.constructor.name);
+        setTimeout(this.props.setPageDone,1000);
+    }
+
     render() {
-        return <div className="">
-            <h1>Nian-Galaxy</h1>
-            {/*<NoteBookList />*/}
-            <Link href="/create-note"><a><br/>设置记本</a></Link>
-            <Link href="/create-user"><a><br/>用户设置</a></Link>
-        </div>
+        const {isPageDone}=this.props;
+        return isPageDone?<div className="flex_center">
+            <div className="border">
+                <h1>NianGalaxy</h1>
+                <Link href="/user"><a>用户资料</a></Link>
+            </div>
+        </div>:null
     }
 }
+export default withNian(Index);
