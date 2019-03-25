@@ -1,28 +1,46 @@
 import React from "react";
+import {withRouter} from "next/router";
+import Link from "next/link";
+import UserCreate from "../components/view/UserCreate";
+import UserList from "../components/view/UserList";
+
 import PropTypes from "prop-types";
-import {LoadConsumer} from "../components/page/Loading";
+import withNian from "../components/withNian";
 
 class User extends React.Component {
-    static propTypes = {
-        allDone: PropTypes.bool.isRequired,
-        setDone: PropTypes.func.isRequired,
-        logInfo: PropTypes.func.isRequired
-    };
-    constructor(props) {
-        super(props);
+    static propTypes = {};
+    state = {queryType: ''};
 
-        this.state = {};
-
+    componentDidMount() {
+        const {query} = this.props.router;
+        let queryType = '';
+        if(query && query.type)queryType=query.type;
+        this.setState({queryType: queryType});
+        this.props.setPageDone();
     }
 
     render() {
-        const {allDone} = this.props;
+        const {isPageDone,router} = this.props;
+        const {queryType} = this.state;
         return (
-            <div>
+            isPageDone ? (
+                <div className="flex_center">
+                    {queryType==='create' ?
+                     <UserCreate type='create'/> : (
+                         <Link
+                             href={{
+                                 pathname: '/user',
+                                 query: {type: 'create'}
+                             }} replace
+                         ><a onClick={this.forceUpdate}>create</a></Link>
+                     )}
+                    {queryType==='edit' ? <UserCreate type="edit" userKey={router.query.key}/> : null}
 
-            </div>
-        );
+                    <UserList />
+                </div>
+            ) : null
+        )
     }
 }
 
-export default LoadConsumer(User);
+export default withNian(withRouter(User));
