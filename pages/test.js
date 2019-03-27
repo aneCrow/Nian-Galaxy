@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 import NianAPI from "../components/lib/NianAPI";
 
-import {LoadConsumer} from "../components/page/Loading";
-import withNian, {LogContext} from "../components/withNian";
+import withNian from "../components/test";
 
 class Test extends React.Component {
     static propTypes = {
@@ -18,12 +17,17 @@ class Test extends React.Component {
 
     componentDidMount() {
         console.log('%s in ComponentDidMount',this.constructor.name);
-        setTimeout(this.props.setPageDone,1000);
+        const lib = new NianAPI();
+        console.dir(lib);
+        // setTimeout(this.props.setPageDone,1000);
     }
 
     render() {
-        const {isPageDone}=this.props;
-        return isPageDone?<div>empty test:{this.state.info}</div>:null
+        // const {isPageDone}=this.props;
+        // return isPageDone?<div>empty test:{this.state.info}</div>:null
+        return <React.Fragment>
+            <div>test</div>
+        </React.Fragment>
     }
 }
 export default withNian(Test);

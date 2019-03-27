@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
 
-import withNian from "../components/withNian";
+import withNian from "../components/test";
 
 class Index extends React.Component {
     static propTypes = {
@@ -15,17 +15,15 @@ class Index extends React.Component {
 
     componentDidMount() {
         console.log('%s in ComponentDidMount',this.constructor.name);
-        setTimeout(this.props.setPageDone,1000);
     }
 
     render() {
-        const {isPageDone}=this.props;
-        return isPageDone?<div className="flex_center">
+        const {}=this.props;
+        return <div className="flex_center">
             <div className="border">
-                <h1>NianGalaxy</h1>
-                <Link href="/user"><a>用户资料</a></Link>
+                <h2>YourHomePage</h2>
             </div>
-        </div>:null
+        </div>
     }
 }
 export default withNian(Index);
