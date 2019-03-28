@@ -1,8 +1,4 @@
 import React from "react";
-import {withRouter} from "next/router";
-import Link from "next/link";
-import UserCreate from "../components/view/UserCreate";
-// import UserList from "../components/view/UserList";
 
 import PropTypes from "prop-types";
 import withNian from "../components/test";
@@ -10,18 +6,33 @@ import NianAPI from "../components/lib/NianAPI";
 
 class User extends React.Component {
     static propTypes = {};
-    state = {};
+    state = {
+        subPage: 'profile',
+        editor: '',
+        editValue: {}
+    };
 
-    componentDidMount() {
-
-    }
+    openEditor = (mode = '', value = {}) => this.setState({editor: mode, editValue: value});
 
     render() {
         const {} = this.props;
+        const {editor, editValue, subPage} = this.state;
+        const pageList = ['profile', 'users'];
         return <React.Fragment>
             <div className="flex_center">
                 <h2>User Profile</h2>
-                <UserSelect/>
+                {pageList.map((title, index) =>
+                                  <PageIndex
+                                      key={index}
+                                      title={title}
+                                      currentTitle={subPage}
+                                      changePage={title => this.setState({subPage: title})}
+                                  />)
+                }
+                {editor === ''
+                 ? <SubPage subPage={subPage} openEditor={this.openEditor}/>
+                 : <Editor mode={editor} editData={editValue} closeEditor={() => this.openEditor()}/>
+                }
                 {/*<UserList/>*/}
             </div>
         </React.Fragment>
@@ -30,123 +41,169 @@ class User extends React.Component {
 }
 
 export default withNian(User);
-function UserSelect() {
-    const lib=NianAPI.instance;
-    return lib.user.isGuest?<p style={{color:'red'}}>create a profile first</p>:
-           <ul>
-               {lib.user.getProfiles().map((user,index)=>
-                    <li>
-                        {lib.user.getActive().index===index?<p>[*]</p>:null}
-                        <a onClick={()=>lib.user.selectActive(index)}>{user.name}</a>
-                        <a onClick={()=>lib.user.removeProfile(index)}>X</a>
-                    </li>
-               )}
-           </ul>
+
+function PageIndex(props) {
+    const {title, currentTitle, changePage} = props;
+    const getStyle = () => {
+        const styles = {margin: '0 4px'};
+        if (currentTitle === title) Object.assign(styles, {color: 'grey'});
+        return styles;
+    };
+    return (
+        <a
+            style={getStyle()}
+            onClick={() => changePage(title)}>
+            {title}
+        </a>
+    )
 }
-class UserList extends React.Component {
+
+class SubPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            mode: '',
-            currentProfile: {}
-        };
         this.lib = NianAPI.instance;
     }
 
-    onModeChange = (mode, profile) => {
-        const{currentProfile}=this.state;
-        if(JSON.stringify(currentProfile)===JSON.stringify(profile)) {
-            mode = null;
-            profile=null;
-        }
-        this.setState({
-                          mode: mode,
-                          currentProfile: profile
-                      })
-    };
-
     render() {
-        const {mode, currentProfile} = this.state;
-        const {lib, onModeChange} = this;
-        return <React.Fragment>
-            <ul>
-                {lib.user.getProfiles()
-                    .map((user, index) =>
-                             <li key={index}>
-                                 <a onClick={() => {
-                                     user.indexNum = index;
-                                     onModeChange('edit', user);
-                                 }}>
-                                     {user.name}
-                                 </a>
-                                 <a >X</a>
-                             </li>
-                    )
+        const {subPage, openEditor} = this.props;
+        const userApi = this.lib.user;
+        return (
+            <React.Fragment>
+                {subPage === 'profile'
+                 ? <React.Fragment>
+                     {userApi.isGuest
+                      ? <p style={{color: 'red'}}>create user first</p>
+                      : <React.Fragment>
+                          {(() => {
+                              const active = userApi.getActive();
+                              const {name, bio, avatar, contact} = active.profile;
+                              return (
+                                  <React.Fragment>
+                                      <p>name: {name}</p>
+                                      <p>bio: {bio}</p>
+                                      <p>avatar: {avatar}</p>
+                                      <p>contact: {contact}</p>
+                                      <button onClick={() => openEditor(
+                                          'edit',
+                                          {
+                                              profile: active.profile,
+                                              index: active.index
+                                          }
+                                      )}>
+                                          edit
+                                      </button>
+                                  </React.Fragment>
+                              )
+                          })()}
+                      </React.Fragment>
+                     }
+                 </React.Fragment>
+                 : null}
+                {subPage === 'users'
+                 ? <React.Fragment>
+                     <ul>
+                         {userApi.isGuest
+                          ? null
+                          : userApi.getProfiles()
+                                   .map((user, index) =>
+                                            <li key={index}>
+                                                {index === userApi.getActive().index
+                                                 ? <span>[*]</span>
+                                                 : null}
+                                                <a onClick={() => {
+                                                    userApi.selectActive(index);
+                                                    this.forceUpdate();
+                                                }}>
+                                                    {user.name}
+                                                </a>
+                                                {index !== userApi.getActive().index
+                                                 ? <a style={{color: 'red'}} onClick={() => {
+                                                        userApi.removeProfile(index);
+                                                        this.forceUpdate();
+                                                    }}> X</a>
+                                                 : null}
+                                            </li>
+                                   )
+                         }
+                         <li>
+                             <button onClick={() => openEditor('create')}>
+                                 +
+                             </button>
+                         </li>
+                     </ul>
+                 </React.Fragment>
+                 : null
                 }
-                {['create' , 'edit'].includes(mode)
-                 ? <UserProfileForm
-                     changeMode={onModeChange}
-                     mode={mode}
-                     profile={currentProfile}/>
-                 : <button onClick={() =>
-                        onModeChange('create', lib.user.defaultProfile)
-                    }>create one</button>
-                }
-            </ul>
-        </React.Fragment>
+            </React.Fragment>
+        );
     }
 }
-class UserProfileForm extends React.Component {
+
+class Editor extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {...props.profile};
+        this.lib = NianAPI.instance;
+        const userApi = this.lib.user;
+        switch (props.mode) {
+            case 'create':
+                this.state = userApi.defaultProfile;
+                break;
+            case 'edit':
+                this.state = props.editData.profile;
+        }
     }
-    componentWillReceiveProps(nextProps, nextContext) {
-        this.setState({...nextProps.profile});
-    }
+
+    // componentWillReceiveProps(nextProps, nextContext) {
+    //     const userApi = this.lib.user;
+    //     switch (this.props.mode) {
+    //         case 'create':
+    //             this.setState(userApi.defaultProfile);
+    //             break;
+    //         case 'edit':
+    //             this.setState(this.props.editData.profile);
+    //     }
+    // }
 
     onChange = e => {
         const current = e.currentTarget;
         this.setState({[current.name]: current.value});
     };
     setProfile = () => {
-        const {mode, changeMode} = this.props;
-        const profile = this.state;
-        profile.isGuest = false;
-        const lib = NianAPI.instance;
-        switch (mode) {
+        const userApi = this.lib.user;
+        switch (this.props.mode) {
             case 'create':
-                lib.user.addProfile(profile);
+                userApi.addProfile(this.state);
                 break;
             case 'edit':
-                lib.user.editProfile(profile,profile.indexNum);
-                break;
+                userApi.editProfile(this.state, this.props.editData.index)
         }
-        changeMode();
+        this.props.closeEditor()
     };
 
     render() {
         const {mode} = this.props;
         const {name, bio, avatar, contact} = this.state;
         const {onChange, setProfile} = this;
-        return <div>
-            <label>
-                <br/>name:<input type="text" name="name" value={name} onChange={onChange}/>
-            </label>
-            <label>
-                <br/>bio:<input type="text" name="bio" value={bio} onChange={onChange}/>
-            </label>
-            <label>
-                <br/>avatar:<input type="text" name="avatar" value={avatar}
-                                   onChange={onChange}/>
-            </label>
-            <label>
-                <br/>contact:<input type="text" name="contact" value={contact}
-                                    onChange={onChange}/>
-            </label>
-            <br/>
-            <button onClick={setProfile}>{mode}</button>
-        </div>
+        return (
+            <React.Fragment>
+                <label>
+                    <br/>name:<input type="text" name="name" value={name} onChange={onChange}/>
+                </label>
+                <label>
+                    <br/>bio:<input type="text" name="bio" value={bio} onChange={onChange}/>
+                </label>
+                <label>
+                    <br/>avatar:<input type="text" name="avatar" value={avatar}
+                                       onChange={onChange}/>
+                </label>
+                <label>
+                    <br/>contact:<input type="text" name="contact" value={contact}
+                                        onChange={onChange}/>
+                </label>
+                <br/>
+                <button onClick={setProfile}>{mode}</button>
+            </React.Fragment>
+        );
     }
 }
 

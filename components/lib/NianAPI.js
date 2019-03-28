@@ -35,9 +35,10 @@ class user {
                            : this.getProfiles();
         const checkIndex = ()=>{
             if(this.isGuest)return 0;
-            index= index?index:this.getActive().index;
-            const limit = storage.profiles.length-1;
-            return index>limit?limit:index;
+            if(index===undefined) return this.getActive().index;
+            const limit = this.getProfiles().length-1;
+            index=limit>=index?index:limit;
+            return index;
         };
         storage.activeIndex = checkIndex();
         console.log('NianAPI-User save profile %o', storage);
@@ -46,25 +47,23 @@ class user {
     };
     selectActive = index => {
         if (this.isGuest) return console.warn('create user profile first.');
-        const profilesLength = this.getProfiles().length;
-        index = profilesLength < index
-                ? 0
-                : index;
         this.saveStorage({index: index})
     };
     addProfile = profile => {
-        const profiles = this.getProfiles();
+        const profiles = this.isGuest?[]:this.getProfiles();
         profiles.push(profile);
         this.saveStorage({profiles: profiles});
     };
     editProfile = (profile, index) => {
+        if(this.isGuest) console.warn('create user profile first.');
         const profiles = this.getProfiles();
         profiles[index] = profile;
         this.saveStorage({profiles: profiles});
     };
     removeProfile = index => {
-        const profiles = this.getProfiles();
-        profiles.slice(index, 1);
+        if(this.isGuest) console.warn('create user profile first.');
+        let profiles = this.getProfiles();
+        profiles.splice(index, 1);//TODO:不能删除数组项目
         this.saveStorage({profiles: profiles});
     };
 
