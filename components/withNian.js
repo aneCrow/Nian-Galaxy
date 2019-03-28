@@ -248,7 +248,7 @@ export default function withNian(Page) {
             };
         }
         stateChangeHandle = (data, key) => {
-            console.warn('StateChange:%s,%o', key, data);
+            console.log('Nian StateChange:%s,%o', key, data);
             this.setState({[key]: data});
         };
         render() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import withNian,{LogContext} from "../components/withNian";
+import withNian from "../components/withNian";
 
 class Log extends React.Component {
     static propTypes = {};
