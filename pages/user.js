@@ -1,7 +1,7 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import withNian from "../components/test";
+import withNian from "../components/withNian";
 import NianAPI from "../components/lib/NianAPI";
 
 class User extends React.Component {

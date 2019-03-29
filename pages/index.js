@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
 
-import withNian from "../components/test";
+import withNian from "../components/withNian";
 
 class Index extends React.Component {
     static propTypes = {
