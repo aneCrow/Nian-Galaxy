@@ -1,20 +1,124 @@
-#Build a React Website 
-https://anecrow.github.io/Nian-Galaxy/docs/demo
+# Nian-Galaxy
+###### 运行在[beaker browser](https://beakerbrowser.com/)上的记本管理APP
+>示例页面
+dat://
 
-power by :
-`TypeScript
-React
-React-Router
-Redux
-Webpack`
+---
+API
+---
+- #### NianLib.user
+######
 
-- /
-    - src/ 项目文件夹
-        - redux/ redux相关(TODO)
-        - view/ 展示组件
-            - Intro.tex 默认页
-            - App.tex 主页(TODO)
-            - DevIndex.tsx 测试页(doing)
-            - styles.ts 样式文件
-        - index.tex 程序入口
-        - MaterialUI.tex 根UI装饰容器
+##### .setProfile(opt?)
+###### return void
+- `opt.name` String.必须，用户名称
+- `opt.bio`
+- `opt.avatar`
+- `opt.contact`
+- `optnotes`
+  - `title`
+  - `url`
+
+```
+NianLib.user.setProfile({
+  name: 'boo',  
+  bio: 'My secret Nian user',  
+  arvatar: 'dat://boo/img.jpg',  
+  contact: 'boo@bar.com , dat://boo'  
+})  
+```
+##### .getProfile()
+###### return Object
+
+##### .setProfile(opt)
+###### return void
+
+##### .updateProfile(opt?)
+###### return void
+
+##### .removeProfile()
+###### return void
+
+##### .addNote(url)
+###### return void
+
+##### .removeNote(url)
+###### return void
+
+##### .cleanNote()
+###### return void
+
+- #### NianLib.note
+######
+
+##### .getInfo()
+###### return void
+
+##### .setProfile(opt)
+###### return void
+
+##### .addFeed(opt)
+###### return void
+
+##### .editFeed(url,opt)
+###### return void
+
+##### .removeFeed(url)
+###### return void
+
+##### .cleanFeed()
+###### return void
+
+
+---
+Archive组成
+---
+### User
+##### localStorage/nian-userProfiles数据结构
+###### 存储着基本信息，留言或回复时留下的数据
+```
+{
+  name: 'foo',          //必须
+  bio: 'bar',
+  avatar: 'IMGurl',
+  contact: 'url'|'email or anything',
+  notes: [{
+    title: 'baz',
+    url: 'DATurl'       //必须
+  }]
+}
+```
+
+### Note Archive
+
+##### 总文件结构
+```
+/dat.json               - Beaker metadata file
+/thumb.(jpg|png)        - 缩略图(avatar)256x256
+/cover.(jpg|png)        - 封面文件
+/data/noteProfiles.json - 记本 metadata file
+/data/feed/             - Contains unwalled.garden/post records
+/data/comments/         - Contains unwalled.garden/comment records
+/data/votes/            - Contains vote records (see "the votes folder")
+/data/known-sites/      - Contains cached copies of referenced sites' metadata
+```
+##### /data/noteProfiles.json数据结构
+> createdAt =()=> (new Date()).toISOString
+```
+{
+  "createdAt": "2018-12-07T02:52:11.947Z",
+  "title": "foo",
+  "author": "bar",
+  "description": "baz"
+  }
+}
+```
+##### /data/feed/{createdAt}.json数据结构
+```
+{
+  "createdAt": "2018-12-07T02:52:11.947Z",
+  "content": {
+    "body": "foo"
+  }
+}
+```
